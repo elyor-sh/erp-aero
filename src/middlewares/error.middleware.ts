@@ -7,5 +7,5 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
         return res.status(err.status).json({message: err.message})
     }
 
-    return res.status(500).json({message: 'Undefined error'})
+    return res.status(500).json({message: 'Undefined error', errors: err})
 }
