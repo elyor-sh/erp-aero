@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import {PORT} from "./config";
+import {PORT} from "./config/vars";
 import {app} from "./app";
 
 const bootstrap = async () => {
