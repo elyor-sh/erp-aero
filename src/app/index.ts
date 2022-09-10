@@ -3,6 +3,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import {authRouter} from "../auth/auth.route";
 import {errorMiddleware} from "../middlewares/error.middleware";
+import {userRouter} from "../user/user.route";
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended: true}))
 
 //routes
 app.use('/', authRouter)
+app.use('/', userRouter)
 
 // error handling
 app.use(errorMiddleware)

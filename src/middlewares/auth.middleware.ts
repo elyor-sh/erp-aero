@@ -14,12 +14,12 @@ export function authMiddleware (req: RequestWithUserInterface, res: Response, ne
         const authorization = headers.authorization
 
         if(!authorization){
-            return res.status(401).json({message: 'User is not authorized'})
+            return res.status(401).json({message: 'User not authorized'})
         }
 
         const token = authorization.split(' ')[1]
         if(!token){
-            return res.status(401).json({message: 'User is not authorized'})
+            return res.status(401).json({message: 'User not authorized'})
         }
 
         const decodedData = jwtService.decodeAccessToken(token)
@@ -27,6 +27,6 @@ export function authMiddleware (req: RequestWithUserInterface, res: Response, ne
         next()
 
     } catch (error) {
-        return res.status(401).json({message: 'User is not authorized'})
+        return res.status(401).json({message: 'User not authorized'})
     }
 }

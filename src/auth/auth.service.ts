@@ -16,16 +16,18 @@ class AuthService {
         const user = await this.userService.getOne(params.id)
 
         if(!user){
-            throw new HttpException(400, 'User not found')
+            throw HttpException.BadRequest('User not found')
         }
 
         const isValidPass = await this.compare(params.password, user.password)
 
         if(!isValidPass){
-            throw new HttpException(400, 'Invalid password')
+            throw HttpException.BadRequest('Invalid password')
         }
 
-        const {refresh_token} = await this.jwtService.getRefreshTokenByUserId(params.id)
+
+
+        const {refresh_token} = await this.jwtService.checkRefreshToken(params.id)
 
         const accessToken = this.jwtService.generateAccessToken(params.id)
 
@@ -38,7 +40,7 @@ class AuthService {
        const candidate = await this.userService.getOne(params.id)
 
         if(candidate){
-            throw new HttpException(400, 'User not found')
+            throw HttpException.BadRequest( 'User not found')
         }
 
         const hashedPassword = await this.hashPassword(params.password)
@@ -49,12 +51,29 @@ class AuthService {
         const accessToken = this.jwtService.generateAccessToken(params.id)
 
         return {
-            refreshToken, accessToken
+            refreshToken: refreshToken.refresh_token, accessToken
         }
     }
 
-    async logout (userId: string) {
+    public async logout (userId: string) {
         return this.jwtService.deleteRefreshToken(userId)
+    }
+
+    public async createAccessTokenByRefreshToken (refreshToken: string) {
+
+        const token = await this.jwtService.getRefreshToken(refreshToken)
+
+        if(!token){
+            throw HttpException.BadRequest('Refresh token not found')
+        }
+
+        const decodedData = this.jwtService.decodeRefreshToken(refreshToken)
+
+        const accessToken = this.jwtService.generateAccessToken(decodedData.id)
+
+        return {
+            refreshToken, accessToken
+        }
     }
 
     private async hashPassword (password: string) {

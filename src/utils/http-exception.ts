@@ -3,8 +3,13 @@ export class HttpException extends Error {
     message: string = ''
 
     constructor(status: number, message: string) {
-        super();
+        super(message);
         this.status = status
         this.message = message
     }
+
+    static BadRequest (message: string) {
+        return new HttpException(400, message)
+    }
+
 }
