@@ -1,39 +1,50 @@
 
 // решил создавать простой query builder
 import {pool} from "./pool";
-import {RowDataPacket} from "mysql2";
+import {HttpException} from "../utils/http-exception";
 
-class QueryBuilder {
+export class QueryBuilder {
+
+    tableName: string = ''
+
+    constructor(tableName: string) {
+        this.tableName = tableName
+    }
 
     // Получить данные
-    public async find<T>(tableName: string): Promise<T> {
-        const [rows] = await pool.query(`SELECT * FROM ${tableName}`)
+    public async find<T>(): Promise<T> {
+        const [rows] = await pool.query(`SELECT * FROM ${this.tableName}`)
         return rows as T
     }
 
     // Получить
-    public async findOne<T>(tableName: string, query: Object): Promise<T | null> {
+    public async findOne<T>(query: Object, columns: string = '*'): Promise<T> {
 
         const {queryString, values} = this.getQueryData(query)
 
         if(!values){
-            return null
+            throw new HttpException(400, 'Not found')
         }
 
-        const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE ${queryString}`, values)
+        const [rows] = await pool.query(`SELECT ${columns} FROM ${this.tableName} WHERE ${queryString}`, values)
         return JSON.parse(JSON.stringify(rows))[0] as T
     }
 
     // Создание новой сущности
-    public async create (tableName: string, params: Object) {
-        const [row] = await pool.query(`INSERT INTO ${tableName} SET ?`, params)
+    public async create ( params: Object) {
+        const [row] = await pool.query(`INSERT INTO ${this.tableName} SET ?`, params)
         return row
     }
 
     // Обновление
-    public async update (tableName: string, params: Object, query: string) {
-        const [row] = await pool.query(`UPDATE ${tableName} SET ? WHERE ${query}`, params)
+    public async update (params: Object, query: string) {
+        const [row] = await pool.query(`UPDATE ${this.tableName} SET ? WHERE ${query}`, params)
         return row
+    }
+
+    // Удаление
+    public async delete (params: Object) {
+        await pool.query(`DELETE FROM ${this.tableName} WHERE ?`, params)
     }
 
     private  getQueryData (params: Object) {
@@ -42,7 +53,7 @@ class QueryBuilder {
 
         const queryString =
             keys.length === 1 ?
-                keys[0]
+                keys[0] + ' = ?'
                 :
                 keys.join(' = ? AND ') + ' = ?'
 
@@ -53,5 +64,3 @@ class QueryBuilder {
     }
 
 }
-
-export const queryBuilder = new QueryBuilder()

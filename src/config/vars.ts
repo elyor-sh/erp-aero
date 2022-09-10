@@ -13,3 +13,6 @@ export const dbConfig: PoolOptions = {
     connectionLimit: 10,
     queueLimit: 0
 }
+
+export const JWT_ACCESS_KEY = process.env.JWT_ACCESS_KEY || 'jwt_secret_187_appv3'
+export const JWT_REFRESH_KEY = process.env.JWT_REFRESH_KEY || 'jwt_secret_187_mntYui'

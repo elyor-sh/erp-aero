@@ -13,3 +13,10 @@ CREATE TABLE files(
                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
                      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE tokens(
+                      id SERIAL PRIMARY KEY,
+                      refresh_token VARCHAR(255) NOT NULL,
+                      user_id VARCHAR(40),
+                      FOREIGN KEY (user_id) REFERENCES users(id)
+);
