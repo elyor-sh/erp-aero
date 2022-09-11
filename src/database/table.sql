@@ -8,8 +8,8 @@ CREATE TABLE files(
                      id SERIAL PRIMARY KEY,
                      name VARCHAR(255),
                      ext VARCHAR(255),
+                     mime_type VARCHAR(255),
                      size INTEGER,
-                     distance DECIMAL,
                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
                      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
