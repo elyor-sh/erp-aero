@@ -19,3 +19,5 @@ export const JWT_ACCESS_KEY = process.env.JWT_ACCESS_KEY || 'jwt_secret_187_appv
 export const JWT_REFRESH_KEY = process.env.JWT_REFRESH_KEY || 'jwt_secret_187_mntYui'
 
 export const STATIC_FOLDER_PATH = path.resolve(__dirname, '..', 'static')
+
+export const SWAGGER_BASE_URL = `http://localhost:${PORT}`
