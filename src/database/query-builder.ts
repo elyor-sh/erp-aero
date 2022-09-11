@@ -12,8 +12,8 @@ export class QueryBuilder {
     }
 
     // Получить данные
-    public async find<T>(): Promise<T> {
-        const [rows] = await pool.query(`SELECT * FROM ${this.tableName}`)
+    public async find<T>(limit: string = ''): Promise<T> {
+        const [rows] = await pool.query(`SELECT * FROM ${this.tableName} ${limit}`)
         return rows as T
     }
 
@@ -38,7 +38,7 @@ export class QueryBuilder {
 
     // Обновление
     public async update (params: Object, query: string) {
-        const [row] = await pool.query(`UPDATE ${this.tableName} SET ? WHERE ${query}`, params)
+        const [row] = await pool.query(`UPDATE ${this.tableName} SET ?  WHERE ${query}`, params)
         return row
     }
 
