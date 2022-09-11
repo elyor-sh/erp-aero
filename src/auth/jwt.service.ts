@@ -21,7 +21,7 @@ export class JwtService {
 
         const newRefreshToken = this.generateRefreshToken(id)
 
-        await this.tokenRepository.update({refresh_token: newRefreshToken}, `user_id = ${id}`)
+        await this.tokenRepository.update({refresh_token: newRefreshToken}, `user_id = "${id}"`)
 
         return this.getRefreshToken(newRefreshToken)
     }

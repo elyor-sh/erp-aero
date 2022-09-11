@@ -4,6 +4,7 @@
     "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "strict": true,
     "noImplicitAny": true,
@@ -12,7 +13,8 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*"]
 }
