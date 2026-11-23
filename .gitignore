@@ -9,3 +9,8 @@ dist
 
 src/static
 /src/static
+
+# env files
+.env
+.env.*
+!.env.example
